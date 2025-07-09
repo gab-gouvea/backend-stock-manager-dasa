@@ -1,0 +1,12 @@
+services:
+  dasa-stock-mysql:
+    image: bitnami/mysql:latest
+    ports:
+      - '3306:3306'
+    environment:
+      - MYSQL_ROOT_PASSWORD=dasa
+      - MYSQL_DATABASE=stock
+      - MYSQL_USER=dasa
+      - MYSQL_PASSWORD=dasa
+    volumes:
+      - ./mysql-data:/bitnami/mysql/data
