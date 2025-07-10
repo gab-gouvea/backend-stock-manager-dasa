@@ -1,11 +1,14 @@
 package br.com.estoque.dasa.modules.user.controller;
 
 
+import br.com.estoque.dasa.modules.user.entity.User;
 import br.com.estoque.dasa.modules.user.repository.UserRepository;
 import br.com.estoque.dasa.modules.user.service.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,8 +22,12 @@ public class UserController {
 
     @PostMapping
     @Transactional
-    public void create(@RequestBody @Valid DataCreateUser data) {
+    public ResponseEntity<?> create(@RequestBody @Valid DataCreateUser data) {
+        if (repository.existsByEmail(data.email())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email já cadastrado!");
+        }
         repository.save(new User(data));
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping
@@ -30,14 +37,19 @@ public class UserController {
 
     @PutMapping
     @Transactional
-    public void update(@RequestBody DataAttUser data) {
+    public ResponseEntity<?> update(@RequestBody @Valid DataAttUser data) {
         var user = repository.getReferenceById(data.id());
         user.updateValues(data);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Dados atualizados com sucesso!");
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        if (!repository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
         repository.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }

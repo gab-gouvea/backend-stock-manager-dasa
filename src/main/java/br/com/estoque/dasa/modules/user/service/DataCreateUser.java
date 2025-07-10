@@ -9,6 +9,9 @@ public record DataCreateUser(
         String name,
 
         @Email
+        @NotBlank
         String email,
+
+        @NotBlank
         String password) {
 }

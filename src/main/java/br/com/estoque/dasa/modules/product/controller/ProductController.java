@@ -5,7 +5,7 @@ import br.com.estoque.dasa.modules.product.repository.ProductRepository;
 import br.com.estoque.dasa.modules.product.service.DataAttProduct;
 import br.com.estoque.dasa.modules.product.service.DataCreateProduct;
 import br.com.estoque.dasa.modules.product.service.DataListProduct;
-import br.com.estoque.dasa.modules.product.service.Product;
+import br.com.estoque.dasa.modules.product.entity.Product;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

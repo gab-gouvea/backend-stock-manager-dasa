@@ -1,7 +1,7 @@
 package br.com.estoque.dasa.modules.category.controller;
 
 import br.com.estoque.dasa.modules.category.repository.CategoryRepository;
-import br.com.estoque.dasa.modules.category.service.Category;
+import br.com.estoque.dasa.modules.category.entity.Category;
 import br.com.estoque.dasa.modules.category.service.DataAttCategory;
 import br.com.estoque.dasa.modules.category.service.DataCreateCategory;
 import br.com.estoque.dasa.modules.category.service.DataListCategory;

@@ -1,4 +1,13 @@
 package br.com.estoque.dasa.modules.user.service;
 
-public record DataAttUser(Long id, String name, String password) {
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+public record DataAttUser(
+
+        @NotNull
+        Long id,
+
+        String name,
+        String password) {
 }
