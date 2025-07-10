@@ -4,6 +4,7 @@ package br.com.estoque.dasa.modules.user.controller;
 import br.com.estoque.dasa.modules.user.repository.UserRepository;
 import br.com.estoque.dasa.modules.user.service.*;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ public class UserController {
 
     @PostMapping
     @Transactional
-    public void create(@RequestBody DataCreateUser data) {
+    public void create(@RequestBody @Valid DataCreateUser data) {
         repository.save(new User(data));
     }
 
