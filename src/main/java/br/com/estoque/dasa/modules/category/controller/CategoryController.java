@@ -31,10 +31,9 @@ public class CategoryController {
 
     @PutMapping
     @Transactional
-    public Category update(@RequestBody DataAttCategory data) {
+    public void update(@RequestBody DataAttCategory data) {
        var category =  repository.getReferenceById(data.id());
        category.updateValues(data);
-       return category;
     }
 
     @DeleteMapping("/{id}")
