@@ -6,7 +6,10 @@ import br.com.estoque.dasa.modules.category.service.DataAttCategory;
 import br.com.estoque.dasa.modules.category.service.DataCreateCategory;
 import br.com.estoque.dasa.modules.category.service.DataListCategory;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,8 +23,12 @@ public class CategoryController {
 
     @PostMapping
     @Transactional
-    public void create(@RequestBody DataCreateCategory data) {
+    public ResponseEntity<?> create(@RequestBody @Valid DataCreateCategory data) {
+        if (repository.existsByName(data.name()) || repository.existsByColor(data.color())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Nome ou cor já estão cadastrados!");
+        }
         repository.save(new Category(data));
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping
@@ -31,15 +38,26 @@ public class CategoryController {
 
     @PutMapping
     @Transactional
-    public void update(@RequestBody DataAttCategory data) {
+    public ResponseEntity<?> update(@RequestBody @Valid DataAttCategory data) {
+        if (!repository.existsById(data.id())) {
+            return ResponseEntity.notFound().build();
+        }
+        if (repository.existsByName(data.name()) || repository.existsByColor(data.color())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Nome ou cor já estão cadastrados!");
+        }
        var category =  repository.getReferenceById(data.id());
        category.updateValues(data);
+       return ResponseEntity.status(HttpStatus.ACCEPTED).body("Dados atualizados com sucesso!");
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<?> delete(@PathVariable String id) {
+        if (!repository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
         repository.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

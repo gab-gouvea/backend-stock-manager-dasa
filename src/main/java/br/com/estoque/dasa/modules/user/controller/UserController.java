@@ -38,6 +38,9 @@ public class UserController {
     @PutMapping
     @Transactional
     public ResponseEntity<?> update(@RequestBody @Valid DataAttUser data) {
+        if (!repository.existsById(data.id())) {
+            return ResponseEntity.notFound().build();
+        }
         var user = repository.getReferenceById(data.id());
         user.updateValues(data);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body("Dados atualizados com sucesso!");
@@ -45,7 +48,7 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    public ResponseEntity<?> delete(@PathVariable String id) {
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }

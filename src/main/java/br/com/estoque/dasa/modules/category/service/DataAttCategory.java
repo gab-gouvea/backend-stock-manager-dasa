@@ -1,4 +1,12 @@
 package br.com.estoque.dasa.modules.category.service;
 
-public record DataAttCategory(Long id, String name, String color) {
+import jakarta.validation.constraints.NotNull;
+
+public record DataAttCategory(
+
+        @NotNull
+        String id,
+
+        String name,
+        String color) {
 }

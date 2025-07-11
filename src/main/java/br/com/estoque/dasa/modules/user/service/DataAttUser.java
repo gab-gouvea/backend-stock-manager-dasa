@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 public record DataAttUser(
 
         @NotNull
-        Long id,
+        String id,
 
         String name,
         String password) {

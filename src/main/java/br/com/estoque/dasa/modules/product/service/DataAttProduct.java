@@ -1,4 +1,12 @@
 package br.com.estoque.dasa.modules.product.service;
 
-public record DataAttProduct(Long id, String name, String description) {
+import jakarta.validation.constraints.NotNull;
+
+public record DataAttProduct(
+
+        @NotNull
+        String id,
+
+        String name,
+        String description) {
 }
