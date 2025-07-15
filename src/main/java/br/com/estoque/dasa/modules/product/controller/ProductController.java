@@ -6,6 +6,10 @@ import br.com.estoque.dasa.modules.product.service.DataAttProduct;
 import br.com.estoque.dasa.modules.product.service.DataCreateProduct;
 import br.com.estoque.dasa.modules.product.service.DataListProduct;
 import br.com.estoque.dasa.modules.product.entity.Product;
+import br.com.estoque.dasa.modules.product_log.entity.ProductLog;
+import br.com.estoque.dasa.modules.product_log.repository.ProductLogRepository;
+import br.com.estoque.dasa.modules.product_log.service.DataJoin;
+import br.com.estoque.dasa.modules.product_log.service.DataRemoval;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +26,9 @@ public class ProductController {
 
     @Autowired
     private ProductRepository repository;
+
+    @Autowired
+    private ProductLogRepository logRepository;
 
     @PostMapping
     @Transactional
@@ -59,5 +66,47 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/{id}/removal")
+    @Transactional
+    public ResponseEntity<?> stockOut(
+            @PathVariable String id,
+            @RequestBody @Valid DataRemoval data
+    ) {
+        if (!repository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Product product = repository.getReferenceById(id);
+
+        try {
+            product.stockOut(data);
+        } catch (IllegalArgumentException error) {
+            return ResponseEntity.badRequest().body(error.getMessage());
+        }
+
+        var log = new ProductLog("SAIDA_ESTOQUE", data.quantity(), data.cpf(), product);
+        logRepository.save(log);
+
+        return ResponseEntity.ok("Estoque atualizado e log gerado!");
+    }
+
+    @PostMapping("/{id}/join")
+    @Transactional
+    public ResponseEntity<?> stockIn(
+        @PathVariable String id,
+        @RequestBody @Valid DataJoin data
+   ) {
+        if (!repository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        var product = repository.getReferenceById(id);
+        product.stockIn(data);
+
+        var log = new ProductLog("ENTRADA_ESTOQUE", data.quantity(), data.cpf(), product);
+        logRepository.save(log);
+
+        return ResponseEntity.ok("Estoque atualizado e log gerado!");
+    }
 
 }

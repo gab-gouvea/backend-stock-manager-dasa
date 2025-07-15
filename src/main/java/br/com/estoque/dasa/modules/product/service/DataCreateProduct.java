@@ -1,6 +1,8 @@
 package br.com.estoque.dasa.modules.product.service;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 
 public record DataCreateProduct(
 
@@ -8,5 +10,15 @@ public record DataCreateProduct(
         String name,
 
         @NotBlank
-        String description) {
+        String description,
+
+        @NotNull
+        @PositiveOrZero
+        Long quantity,
+
+        @NotNull
+        @PositiveOrZero
+        Long minQuantity
+) {
+
 }
