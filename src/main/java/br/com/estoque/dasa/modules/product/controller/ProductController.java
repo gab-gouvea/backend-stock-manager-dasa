@@ -1,6 +1,9 @@
 package br.com.estoque.dasa.modules.product.controller;
 
 
+import br.com.estoque.dasa.modules.alert.entity.Alert;
+import br.com.estoque.dasa.modules.alert.repository.AlertRepository;
+import br.com.estoque.dasa.modules.alert.service.EnumTipo;
 import br.com.estoque.dasa.modules.product.repository.ProductRepository;
 import br.com.estoque.dasa.modules.product.service.DataAttProduct;
 import br.com.estoque.dasa.modules.product.service.DataCreateProduct;
@@ -29,6 +32,9 @@ public class ProductController {
 
     @Autowired
     private ProductLogRepository logRepository;
+
+    @Autowired
+    private AlertRepository alertRepository;
 
     @PostMapping
     @Transactional
@@ -66,7 +72,7 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/{id}/removal")
+    @PostMapping("/removal/{id}")
     @Transactional
     public ResponseEntity<?> stockOut(
             @PathVariable String id,
@@ -84,13 +90,18 @@ public class ProductController {
             return ResponseEntity.badRequest().body(error.getMessage());
         }
 
+        if (product.getQuantity() <= product.getMinQuantity()) {
+            var alert = new Alert(product, EnumTipo.QUANTIDADE_MINIMA, true, "Quantidade desse produto chegou no limite, compre mais!");
+            alertRepository.save(alert);
+        }
+
         var log = new ProductLog(data.action(), data.quantity(), data.cpf(), product);
         logRepository.save(log);
 
         return ResponseEntity.ok("Estoque atualizado e log gerado!");
     }
 
-    @PostMapping("/{id}/join")
+    @PostMapping("/join/{id}")
     @Transactional
     public ResponseEntity<?> stockIn(
         @PathVariable String id,
@@ -102,6 +113,11 @@ public class ProductController {
 
         var product = repository.getReferenceById(id);
         product.stockIn(data);
+
+        if (product.getQuantity() <= product.getMinQuantity()) {
+            var alert = new Alert(product, EnumTipo.QUANTIDADE_MINIMA, true, "Quantidade desse produto chegou no limite, compre mais!");
+            alertRepository.save(alert);
+        }
 
         var log = new ProductLog(data.action(), data.quantity(), data.cpf(), product);
         logRepository.save(log);

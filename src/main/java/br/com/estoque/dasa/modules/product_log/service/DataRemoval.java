@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotNull;
 public record DataRemoval(
 
         @NotNull
-        Action action,
+        EnumAction action,
 
         @Min(1)
         @NotNull

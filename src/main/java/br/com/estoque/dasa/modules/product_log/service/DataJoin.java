@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotNull;
 public record DataJoin(
 
         @NotNull
-        Action action,
+        EnumAction action,
 
         @NotBlank
         String cpf,

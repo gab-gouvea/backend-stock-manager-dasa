@@ -42,7 +42,7 @@ public class Product {
     @Column(name = "min_quantity", nullable = false)
     private Long minQuantity;
 
-    @ManyToOne
+    @ManyToOne(optional = true)
     @JoinColumn(name = "category_id", nullable = true)
     private Category category;
 
@@ -76,18 +76,9 @@ public class Product {
             throw new IllegalArgumentException("Estoque insuficiente");
         }
         this.quantity -= data.quantity();
-
-        if (this.quantity < this.minQuantity) {
-            System.out.println("Implementar alerta");
-        }
     }
 
     public void stockIn(@Valid DataJoin data) {
         this.quantity += data.quantity();
-
-        if (this.quantity < this.minQuantity) {
-            System.out.println("Implementar alerta");
-        }
-// a quantidade ainda pode ser menor q o minimo para o alerta, mesmo depois de entrar produto no estoque
     }
 }
