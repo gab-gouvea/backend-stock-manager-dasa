@@ -2,6 +2,7 @@ package br.com.estoque.dasa.modules.product_log.entity;
 
 
 import br.com.estoque.dasa.modules.product.entity.Product;
+import br.com.estoque.dasa.modules.product_log.service.Action;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -26,7 +27,7 @@ public class ProductLog {
     private String id;
 
     @Column(nullable = false)
-    private String action;
+    private Action action;
 
     @Column(nullable = false)
     private Long quantity;
@@ -42,7 +43,7 @@ public class ProductLog {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    public ProductLog(String action, Long quantity, String cpf, Product product) {
+    public ProductLog(Action action, Long quantity, String cpf, Product product) {
         this.action = action;
         this.quantity = quantity;
         this.cpf = cpf;

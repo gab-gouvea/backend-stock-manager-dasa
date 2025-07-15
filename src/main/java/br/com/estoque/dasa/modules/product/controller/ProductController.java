@@ -84,7 +84,7 @@ public class ProductController {
             return ResponseEntity.badRequest().body(error.getMessage());
         }
 
-        var log = new ProductLog("SAIDA_ESTOQUE", data.quantity(), data.cpf(), product);
+        var log = new ProductLog(data.action(), data.quantity(), data.cpf(), product);
         logRepository.save(log);
 
         return ResponseEntity.ok("Estoque atualizado e log gerado!");
@@ -103,7 +103,7 @@ public class ProductController {
         var product = repository.getReferenceById(id);
         product.stockIn(data);
 
-        var log = new ProductLog("ENTRADA_ESTOQUE", data.quantity(), data.cpf(), product);
+        var log = new ProductLog(data.action(), data.quantity(), data.cpf(), product);
         logRepository.save(log);
 
         return ResponseEntity.ok("Estoque atualizado e log gerado!");

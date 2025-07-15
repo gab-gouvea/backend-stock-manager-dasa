@@ -7,6 +7,9 @@ import jakarta.validation.constraints.NotNull;
 
 public record DataRemoval(
 
+        @NotNull
+        Action action,
+
         @Min(1)
         @NotNull
         Long quantity,
