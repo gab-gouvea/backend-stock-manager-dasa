@@ -42,8 +42,8 @@ public class Product {
     @Column(name = "min_quantity", nullable = false)
     private Long minQuantity;
 
-    @ManyToOne(optional = true)
-    @JoinColumn(name = "category_id", nullable = true)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
     @CreatedDate
@@ -59,6 +59,7 @@ public class Product {
         this.description = data.description();
         this.quantity = data.quantity();
         this.minQuantity = data.minQuantity();
+        this.category = data.category();
     }
 
     public void updateValues(@Valid DataAttProduct data) {

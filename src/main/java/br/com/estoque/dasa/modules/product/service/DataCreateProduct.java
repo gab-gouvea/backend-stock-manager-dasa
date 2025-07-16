@@ -1,5 +1,6 @@
 package br.com.estoque.dasa.modules.product.service;
 
+import br.com.estoque.dasa.modules.category.entity.Category;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -18,7 +19,10 @@ public record DataCreateProduct(
 
         @NotNull
         @PositiveOrZero
-        Long minQuantity
+        Long minQuantity,
+
+        @NotBlank
+        Category category
 ) {
 
 }
