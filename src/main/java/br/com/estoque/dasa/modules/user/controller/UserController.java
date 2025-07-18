@@ -39,7 +39,7 @@ public class UserController {
     @Transactional
     public ResponseEntity<?> update(@RequestBody @Valid DataAttUser data) {
         if (!repository.existsById(data.id())) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado.");
         }
         var user = repository.getReferenceById(data.id());
         user.updateValues(data);
@@ -50,7 +50,7 @@ public class UserController {
     @Transactional
     public ResponseEntity<?> delete(@PathVariable String id) {
         if (!repository.existsById(id)) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado.");
         }
         repository.deleteById(id);
         return ResponseEntity.noContent().build();

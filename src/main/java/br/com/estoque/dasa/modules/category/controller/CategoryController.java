@@ -40,7 +40,7 @@ public class CategoryController {
     @Transactional
     public ResponseEntity<?> update(@RequestBody @Valid DataAttCategory data) {
         if (!repository.existsById(data.id())) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Categoria não encontrado.");
         }
         if (repository.existsByName(data.name()) || repository.existsByColor(data.color())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Nome ou cor já estão cadastrados!");
@@ -54,7 +54,7 @@ public class CategoryController {
     @Transactional
     public ResponseEntity<?> delete(@PathVariable String id) {
         if (!repository.existsById(id)) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Categoria não encontrado.");
         }
         repository.deleteById(id);
         return ResponseEntity.noContent().build();

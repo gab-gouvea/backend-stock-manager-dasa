@@ -4,6 +4,7 @@ import br.com.estoque.dasa.modules.alert.repository.AlertRepository;
 import br.com.estoque.dasa.modules.alert.service.DataListAlert;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,7 @@ public class AlertController {
     @Transactional
     public ResponseEntity<?> update(@PathVariable String id) {
         if (!repository.existsById(id)) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Alerta não encontrado.");
         }
 
         var alert = repository.getReferenceById(id);

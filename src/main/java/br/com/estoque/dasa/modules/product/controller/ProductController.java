@@ -48,7 +48,7 @@ public class ProductController {
         }
 
         if (!categoryRepository.existsById(data.categoryId())) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Categoria não encontrada.");
         }
 
         var category = categoryRepository.getReferenceById(data.categoryId());
@@ -66,7 +66,7 @@ public class ProductController {
     @Transactional
     public ResponseEntity<?> update(@RequestBody @Valid DataAttProduct data) {
         if (!repository.existsById(data.id())) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto não encontrado.");
         }
         var product = repository.getReferenceById(data.id());
         product.updateValues(data);
@@ -77,7 +77,7 @@ public class ProductController {
     @Transactional
     public ResponseEntity<?> delete(@PathVariable String id) {
         if (!repository.existsById(id)) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto não encontrado.");
         }
         repository.deleteById(id);
         return ResponseEntity.noContent().build();
@@ -90,7 +90,7 @@ public class ProductController {
             @RequestBody @Valid DataRemoval data
     ) {
         if (!repository.existsById(id)) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto não encontrado.");
         }
 
         Product product = repository.getReferenceById(id);
@@ -119,7 +119,7 @@ public class ProductController {
         @RequestBody @Valid DataJoin data
    ) {
         if (!repository.existsById(id)) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto não encontrado.");
         }
 
         var product = repository.getReferenceById(id);
