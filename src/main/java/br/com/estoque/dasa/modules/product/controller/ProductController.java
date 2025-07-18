@@ -4,6 +4,7 @@ package br.com.estoque.dasa.modules.product.controller;
 import br.com.estoque.dasa.modules.alert.entity.Alert;
 import br.com.estoque.dasa.modules.alert.repository.AlertRepository;
 import br.com.estoque.dasa.modules.alert.service.EnumTipo;
+import br.com.estoque.dasa.modules.category.repository.CategoryRepository;
 import br.com.estoque.dasa.modules.product.repository.ProductRepository;
 import br.com.estoque.dasa.modules.product.service.DataAttProduct;
 import br.com.estoque.dasa.modules.product.service.DataCreateProduct;
@@ -36,13 +37,23 @@ public class ProductController {
     @Autowired
     private AlertRepository alertRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     @PostMapping
     @Transactional
     public ResponseEntity<?> create(@RequestBody @Valid DataCreateProduct data) {
         if (repository.existsByName(data.name())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Este produto já foi cadastrado!");
         }
-        repository.save(new Product(data));
+
+        if (!categoryRepository.existsById(data.categoryId())) {
+            return ResponseEntity.notFound().build();
+        }
+
+        var category = categoryRepository.getReferenceById(data.categoryId());
+        repository.save(new Product(data.name(), data.description(), data.quantity(), data.minQuantity(), category));
+
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

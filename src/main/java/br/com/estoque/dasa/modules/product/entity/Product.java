@@ -54,12 +54,12 @@ public class Product {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public Product(@Valid DataCreateProduct data) {
-        this.name = data.name();
-        this.description = data.description();
-        this.quantity = data.quantity();
-        this.minQuantity = data.minQuantity();
-        this.category = data.category();
+    public Product(String name, String description, Long quantity, Long minQuantity, Category category) {
+        this.name = name;
+        this.description = description;
+        this.quantity = quantity;
+        this.minQuantity = minQuantity;
+        this.category = category;
     }
 
     public void updateValues(@Valid DataAttProduct data) {

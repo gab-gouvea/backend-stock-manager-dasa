@@ -22,7 +22,7 @@ public record DataCreateProduct(
         Long minQuantity,
 
         @NotBlank
-        Category category
+        String categoryId
 ) {
 
 }

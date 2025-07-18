@@ -27,8 +27,8 @@ public class Alert {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @ManyToOne(optional = true)
-    @JoinColumn(name = "product_id", nullable = true)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
     @Enumerated(EnumType.STRING)

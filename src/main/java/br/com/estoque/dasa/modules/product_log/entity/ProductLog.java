@@ -36,8 +36,8 @@ public class ProductLog {
     @Column(nullable = false, length = 14)
     private String cpf;
 
-    @ManyToOne(optional = true)
-    @JoinColumn(name = "product_id", nullable = true)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
     @CreatedDate
