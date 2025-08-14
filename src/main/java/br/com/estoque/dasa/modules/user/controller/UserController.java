@@ -4,6 +4,9 @@ package br.com.estoque.dasa.modules.user.controller;
 import br.com.estoque.dasa.modules.user.entity.User;
 import br.com.estoque.dasa.modules.user.repository.UserRepository;
 import br.com.estoque.dasa.modules.user.service.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,7 @@ public class UserController {
     @Autowired
     private UserRepository repository;
 
+    @Operation(description = "Cria um usuário")
     @PostMapping
     @Transactional
     public ResponseEntity<?> create(@RequestBody @Valid DataCreateUser data) {
@@ -30,6 +34,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @Operation(description = "Lista um usuário")
     @GetMapping
     public List<DataListUser> list() {
         return repository.findAll().stream().map(DataListUser::new).toList();

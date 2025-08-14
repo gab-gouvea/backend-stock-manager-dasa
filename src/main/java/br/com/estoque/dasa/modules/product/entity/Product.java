@@ -2,7 +2,6 @@ package br.com.estoque.dasa.modules.product.entity;
 
 import br.com.estoque.dasa.modules.category.entity.Category;
 import br.com.estoque.dasa.modules.product.service.DataAttProduct;
-import br.com.estoque.dasa.modules.product.service.DataCreateProduct;
 import br.com.estoque.dasa.modules.product_log.service.DataJoin;
 import br.com.estoque.dasa.modules.product_log.service.DataRemoval;
 import jakarta.persistence.*;
