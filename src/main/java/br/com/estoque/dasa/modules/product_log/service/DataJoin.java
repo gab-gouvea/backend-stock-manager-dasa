@@ -6,13 +6,6 @@ import jakarta.validation.constraints.NotNull;
 
 
 public record DataJoin(
-
-        @NotNull
-        EnumAction action,
-
-        @NotBlank
-        String cpf,
-
         @NotNull
         @Min(1)
         Long quantity

@@ -83,17 +83,16 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/removal/{id}")
+    @PostMapping("/removal")
     @Transactional
     public ResponseEntity<?> stockOut(
-            @PathVariable String id,
             @RequestBody @Valid DataRemoval data
     ) {
-        if (!repository.existsById(id)) {
+        if (!repository.existsById(data.id())) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto não encontrado.");
         }
 
-        Product product = repository.getReferenceById(id);
+        Product product = repository.getReferenceById(data.id());
 
         try {
             product.stockOut(data);
@@ -106,7 +105,7 @@ public class ProductController {
             alertRepository.save(alert);
         }
 
-        var log = new ProductLog(data.action(), data.quantity(), data.cpf(), product);
+        var log = new ProductLog(data.quantity(), data.cpf(), product);
         logRepository.save(log);
 
         return ResponseEntity.ok("Estoque atualizado e log gerado!");
@@ -130,7 +129,7 @@ public class ProductController {
             alertRepository.save(alert);
         }
 
-        var log = new ProductLog(data.action(), data.quantity(), data.cpf(), product);
+        var log = new ProductLog(data.quantity(), product);
         logRepository.save(log);
 
         return ResponseEntity.ok("Estoque atualizado e log gerado!");

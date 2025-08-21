@@ -8,5 +8,5 @@ services:
       - MYSQL_DATABASE=stock
       - MYSQL_USER=dasa
       - MYSQL_PASSWORD=dasa
-    volumes:
-      - ./mysql-data:/bitnami/mysql/data
+#    volumes:
+#      - ./mysql-data:/bitnami/mysql/data
