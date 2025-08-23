@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 
@@ -131,7 +130,7 @@ public class ProductController {
         product.stockIn(data);
 
         if (product.getQuantity() <= product.getMinQuantity()) {
-            var alert = new Alert(product, EnumTipo.QUANTIDADE_MINIMA, true, "Quantidade desse produto chegou no limite, compre mais!");
+            var alert = new Alert(product, EnumTipo.QUANTIDADE_MINIMA, true, "Quantidade desse produto continua no limite, compre mais!");
             alertRepository.save(alert);
         }
 
