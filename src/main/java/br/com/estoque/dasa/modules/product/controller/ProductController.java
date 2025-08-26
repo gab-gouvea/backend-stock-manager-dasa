@@ -104,7 +104,7 @@ public class ProductController {
             alertRepository.save(alert);
         }
 
-        var log = new ProductLog(data.quantity(), data.cpf(), product);
+        var log = new ProductLog(data.quantity(), data.cpf(), product, data.action());
         logRepository.save(log);
 
         return ResponseEntity.ok("Estoque atualizado e log gerado!");
@@ -128,7 +128,7 @@ public class ProductController {
             alertRepository.save(alert);
         }
 
-        var log = new ProductLog(data.quantity(), product);
+        var log = new ProductLog(data.quantity(), product, data.action());
         logRepository.save(log);
 
         return ResponseEntity.ok("Estoque atualizado e log gerado!");

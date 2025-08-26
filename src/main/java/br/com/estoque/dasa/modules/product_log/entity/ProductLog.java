@@ -2,6 +2,7 @@ package br.com.estoque.dasa.modules.product_log.entity;
 
 
 import br.com.estoque.dasa.modules.product.entity.Product;
+import br.com.estoque.dasa.modules.product_log.service.EnumAction;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -25,12 +26,15 @@ public class ProductLog {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-
     @Column(nullable = false)
     private Long quantity;
 
     @Column(nullable = true)
     private String cpf;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private EnumAction action;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "product_id", nullable = false)
@@ -40,15 +44,17 @@ public class ProductLog {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    public ProductLog(Long quantity, String cpf, Product product) {
+    public ProductLog(Long quantity, String cpf, Product product, EnumAction action) {
         this.quantity = quantity;
         this.cpf = cpf;
         this.product = product;
+        this.action = action;
     }
 
-    public ProductLog(Long quantity, Product product) {
+    public ProductLog(Long quantity, Product product, EnumAction action) {
         this.quantity = quantity;
         this.product = product;
+        this.action = action;
     }
 }
 

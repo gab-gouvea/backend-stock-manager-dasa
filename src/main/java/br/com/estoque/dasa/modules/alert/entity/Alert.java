@@ -32,6 +32,7 @@ public class Alert {
     private Product product;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private EnumTipo tipo;
 
     @Column(nullable = false)
