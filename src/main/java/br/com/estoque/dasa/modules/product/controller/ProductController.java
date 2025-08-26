@@ -10,7 +10,6 @@ import br.com.estoque.dasa.modules.product.service.DataAttProduct;
 import br.com.estoque.dasa.modules.product.service.DataCreateProduct;
 import br.com.estoque.dasa.modules.product.service.DataListProduct;
 import br.com.estoque.dasa.modules.product.entity.Product;
-import br.com.estoque.dasa.modules.product.service.DatalistProductMiguel;
 import br.com.estoque.dasa.modules.product_log.entity.ProductLog;
 import br.com.estoque.dasa.modules.product_log.repository.ProductLogRepository;
 import br.com.estoque.dasa.modules.product_log.service.DataJoin;
@@ -60,11 +59,6 @@ public class ProductController {
     @GetMapping
     public List<DataListProduct> list() {
         return repository.findAll().stream().map(DataListProduct::new).toList();
-    }
-
-    @GetMapping("/miguel")
-    public List<DatalistProductMiguel> listMiguel() {
-       return repository.findAll().stream().map(DatalistProductMiguel::new).toList();
     }
 
     @PutMapping

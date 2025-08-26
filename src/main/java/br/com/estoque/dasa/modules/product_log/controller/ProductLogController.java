@@ -22,4 +22,8 @@ public class ProductLogController {
     public List<DataListLogs> list() {
         return repository.findAll().stream().map(DataListLogs::new).toList();
     }
-}
+
+};
+
+
+

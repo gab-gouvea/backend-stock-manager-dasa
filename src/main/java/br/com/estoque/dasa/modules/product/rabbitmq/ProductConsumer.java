@@ -30,5 +30,7 @@ public class ProductConsumer {
             //da para tratar com logger aqui
             e.printStackTrace();
         }
+
+
     }
 }
