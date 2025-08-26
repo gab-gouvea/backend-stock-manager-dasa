@@ -29,7 +29,7 @@ public class ProductLog {
     @Column(nullable = false)
     private Long quantity;
 
-    @Column
+    @Column(nullable = true)
     private String cpf;
 
     @ManyToOne(optional = false)
