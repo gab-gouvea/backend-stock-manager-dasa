@@ -32,6 +32,9 @@ public class Category {
     @Column(nullable = false)
     private String color;
 
+    @Column(nullable = false)
+    private String description;
+
     @CreatedDate
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
@@ -43,6 +46,7 @@ public class Category {
     public Category(DataCreateCategory data) {
         this.name = data.name();
         this.color = data.color();
+        this.description = data.description();
     }
 
     public void updateValues(DataAttCategory data) {
@@ -51,6 +55,9 @@ public class Category {
         }
         if (data.color() != null) {
             this.color = data.color();
+        }
+        if (data.description() != null) {
+            this.description = data.description();
         }
     }
 }

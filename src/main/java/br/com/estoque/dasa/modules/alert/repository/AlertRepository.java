@@ -10,5 +10,7 @@ import java.util.List;
 public interface AlertRepository extends JpaRepository<Alert,String> {
     long countByStatusTrue();
     List<Alert> findByProductAndStatusTrue(Product product);
+
+    void deleteByProductId(String id);
 }
 

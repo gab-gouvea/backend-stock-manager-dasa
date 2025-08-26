@@ -1,4 +1,4 @@
 package br.com.estoque.dasa.modules.category.service;
 
-public record DataCreateCategory(String name, String color) {
+public record DataCreateCategory(String name, String color, String description) {
 }

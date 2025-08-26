@@ -6,10 +6,7 @@ import br.com.estoque.dasa.modules.alert.repository.AlertRepository;
 import br.com.estoque.dasa.modules.alert.service.EnumTipo;
 import br.com.estoque.dasa.modules.category.repository.CategoryRepository;
 import br.com.estoque.dasa.modules.product.repository.ProductRepository;
-import br.com.estoque.dasa.modules.product.service.DataAttProduct;
-import br.com.estoque.dasa.modules.product.service.DataCounts;
-import br.com.estoque.dasa.modules.product.service.DataCreateProduct;
-import br.com.estoque.dasa.modules.product.service.DataListProduct;
+import br.com.estoque.dasa.modules.product.service.*;
 import br.com.estoque.dasa.modules.product.entity.Product;
 import br.com.estoque.dasa.modules.product_log.entity.ProductLog;
 import br.com.estoque.dasa.modules.product_log.repository.ProductLogRepository;
@@ -80,7 +77,10 @@ public class ProductController {
         if (!repository.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto não encontrado.");
         }
+        alertRepository.deleteByProductId(id);
+        logRepository.deleteByProductId(id);
         repository.deleteById(id);
+
         return ResponseEntity.noContent().build();
     }
 
@@ -151,5 +151,12 @@ public class ProductController {
         DataCounts counts = new DataCounts(total, minumum, join, removal);
         return ResponseEntity.ok(counts);
     }
+
+    @GetMapping("/countwithcategory")
+    public ResponseEntity<List<DataCountCategory>> countsWithCategory() {
+        List<DataCountCategory> productsCate = repository.countProductByCategory();
+        return ResponseEntity.ok(productsCate);
+    }
+
 
 }

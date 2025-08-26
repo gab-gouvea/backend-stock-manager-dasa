@@ -8,5 +8,7 @@ public record DataAttCategory(
         String id,
 
         String name,
-        String color) {
+        String color,
+        String description
+) {
 }
