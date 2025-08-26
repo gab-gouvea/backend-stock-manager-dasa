@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface ProductLogRepository extends JpaRepository<ProductLog, String> {
     List<ProductLog> findByAction(EnumAction action);
+    long countByAction(EnumAction action);
 }

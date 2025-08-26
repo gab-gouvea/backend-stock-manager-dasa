@@ -7,6 +7,7 @@ import br.com.estoque.dasa.modules.alert.service.EnumTipo;
 import br.com.estoque.dasa.modules.category.repository.CategoryRepository;
 import br.com.estoque.dasa.modules.product.repository.ProductRepository;
 import br.com.estoque.dasa.modules.product.service.DataAttProduct;
+import br.com.estoque.dasa.modules.product.service.DataCounts;
 import br.com.estoque.dasa.modules.product.service.DataCreateProduct;
 import br.com.estoque.dasa.modules.product.service.DataListProduct;
 import br.com.estoque.dasa.modules.product.entity.Product;
@@ -14,6 +15,7 @@ import br.com.estoque.dasa.modules.product_log.entity.ProductLog;
 import br.com.estoque.dasa.modules.product_log.repository.ProductLogRepository;
 import br.com.estoque.dasa.modules.product_log.service.DataJoin;
 import br.com.estoque.dasa.modules.product_log.service.DataRemoval;
+import br.com.estoque.dasa.modules.product_log.service.EnumAction;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -126,12 +128,28 @@ public class ProductController {
         if (product.getQuantity() <= product.getMinQuantity()) {
             var alert = new Alert(product, EnumTipo.QUANTIDADE_MINIMA, true, "Quantidade desse produto continua no limite, compre mais!");
             alertRepository.save(alert);
+        } else {
+            alertRepository.findByProductAndStatusTrue(product)
+                    .forEach(alert -> {
+                        alert.updateStatus();
+                        alertRepository.save(alert);
+                    });
         }
 
         var log = new ProductLog(data.quantity(), product, data.action());
         logRepository.save(log);
 
         return ResponseEntity.ok("Estoque atualizado e log gerado!");
+    }
+
+    @GetMapping("/counts")
+    public ResponseEntity<?> counts() {
+        long total = repository.count();
+        long minumum = alertRepository.countByStatusTrue();
+        long join = logRepository.countByAction(EnumAction.ENTRADA_ESTOQUE);
+        long removal = logRepository.countByAction(EnumAction.RETIRADA_ESTOQUE);
+        DataCounts counts = new DataCounts(total, minumum, join, removal);
+        return ResponseEntity.ok(counts);
     }
 
 }
