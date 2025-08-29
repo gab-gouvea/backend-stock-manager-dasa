@@ -14,6 +14,7 @@ public interface ProductRepository extends JpaRepository<Product,String> {
     SELECT new br.com.estoque.dasa.modules.product.service.DataCountCategory(
         c.id,
         c.color,
+        c.name,
         c.description,
         c.createdAt,
         COUNT(p)

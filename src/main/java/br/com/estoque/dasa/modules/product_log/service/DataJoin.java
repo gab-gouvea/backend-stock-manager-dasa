@@ -8,9 +8,6 @@ import jakarta.validation.constraints.NotNull;
 public record DataJoin(
         @NotNull
         @Min(1)
-        Long quantity,
-
-        @NotNull
-        EnumAction action
+        Long quantity
 ) {
 }

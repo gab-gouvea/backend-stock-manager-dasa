@@ -15,10 +15,6 @@ public record DataRemoval(
         Long quantity,
 
         @NotBlank
-        String cpf,
-
-        @NotNull
-        EnumAction action
-
+        String cpf
 ) {
 }

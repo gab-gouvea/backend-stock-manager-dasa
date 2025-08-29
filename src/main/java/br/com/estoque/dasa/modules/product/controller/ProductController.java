@@ -106,7 +106,7 @@ public class ProductController {
             alertRepository.save(alert);
         }
 
-        var log = new ProductLog(data.quantity(), data.cpf(), product, data.action());
+        var log = new ProductLog(data.quantity(), data.cpf(), product, EnumAction.RETIRADA_ESTOQUE);
         logRepository.save(log);
 
         return ResponseEntity.ok("Estoque atualizado e log gerado!");
@@ -136,7 +136,7 @@ public class ProductController {
                     });
         }
 
-        var log = new ProductLog(data.quantity(), product, data.action());
+        var log = new ProductLog(data.quantity(), product, EnumAction.ENTRADA_ESTOQUE);
         logRepository.save(log);
 
         return ResponseEntity.ok("Estoque atualizado e log gerado!");
