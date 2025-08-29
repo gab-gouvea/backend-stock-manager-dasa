@@ -10,7 +10,17 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product,String> {
     boolean existsByName(String name);
 
-    @Query("SELECT new br.com.estoque.dasa.modules.product.service.DataCountCategory(p.category.name, COUNT(p)) " +
-            "FROM product p GROUP BY p.category.name")
+    @Query("""
+    SELECT new br.com.estoque.dasa.modules.product.service.DataCountCategory(
+        c.id,
+        c.color,
+        c.description,
+        c.createdAt,
+        COUNT(p)
+    )
+    FROM Product p
+    JOIN p.category c
+    GROUP BY c.id, c.color, c.description, c.createdAt
+""")
     List<DataCountCategory> countProductByCategory();
 }

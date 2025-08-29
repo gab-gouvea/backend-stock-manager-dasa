@@ -48,7 +48,6 @@ public class CategoryController {
         return ResponseEntity.ok(produtosCate);
     }
 
-
     @PutMapping
     @Transactional
     public ResponseEntity<?> update(@RequestBody @Valid DataAttCategory data) {
