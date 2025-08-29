@@ -145,18 +145,14 @@ public class ProductController {
     @GetMapping("/counts")
     public ResponseEntity<?> counts() {
         long total = repository.count();
-        long minumum = alertRepository.countByStatusTrue();
+        long minimum = alertRepository.countByStatusTrue();
         long join = logRepository.countByAction(EnumAction.ENTRADA_ESTOQUE);
         long removal = logRepository.countByAction(EnumAction.RETIRADA_ESTOQUE);
-        DataCounts counts = new DataCounts(total, minumum, join, removal);
+        DataCounts counts = new DataCounts(total, minimum, join, removal);
         return ResponseEntity.ok(counts);
     }
 
-    @GetMapping("/countwithcategory")
-    public ResponseEntity<List<DataCountCategory>> countsWithCategory() {
-        List<DataCountCategory> productsCate = repository.countProductByCategory();
-        return ResponseEntity.ok(productsCate);
-    }
+
 
 
 }

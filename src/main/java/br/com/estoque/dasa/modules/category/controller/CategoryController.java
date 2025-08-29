@@ -5,6 +5,8 @@ import br.com.estoque.dasa.modules.category.entity.Category;
 import br.com.estoque.dasa.modules.category.service.DataAttCategory;
 import br.com.estoque.dasa.modules.category.service.DataCreateCategory;
 import br.com.estoque.dasa.modules.category.service.DataListCategory;
+import br.com.estoque.dasa.modules.product.repository.ProductRepository;
+import br.com.estoque.dasa.modules.product.service.DataCountCategory;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -20,6 +23,9 @@ public class CategoryController {
 
     @Autowired
     private CategoryRepository repository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     @PostMapping
     @Transactional
@@ -31,10 +37,17 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public List<DataListCategory> list() {
         return repository.findAll().stream().map(DataListCategory::new).toList();
     }
+
+    @GetMapping
+    public ResponseEntity<List<DataCountCategory>> count() {
+        List<DataCountCategory> produtosCate = productRepository.countProductByCategory();
+        return ResponseEntity.ok(produtosCate);
+    }
+
 
     @PutMapping
     @Transactional
