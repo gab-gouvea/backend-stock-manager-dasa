@@ -125,10 +125,7 @@ public class ProductController {
         var product = repository.getReferenceById(id);
         product.stockIn(data);
 
-        if (product.getQuantity() <= product.getMinQuantity()) {
-            var alert = new Alert(product, EnumTipo.QUANTIDADE_MINIMA, true, "Quantidade desse produto continua no limite, compre mais!");
-            alertRepository.save(alert);
-        } else {
+        if (product.getQuantity() > product.getMinQuantity()) {
             alertRepository.findByProductAndStatusTrue(product)
                     .forEach(alert -> {
                         alert.updateStatus();
@@ -151,8 +148,4 @@ public class ProductController {
         DataCounts counts = new DataCounts(total, minimum, join, removal);
         return ResponseEntity.ok(counts);
     }
-
-
-
-
 }
