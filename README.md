@@ -85,5 +85,5 @@ A API publica mensagens em filas do RabbitMQ para refletir alterações de estoq
 }
 ```
 Exemplo de filas:
-fila.produto.atualizacao → disparada quando um produto é atualizado.
-fila.produto.remocao → disparada quando um produto é removido.
+- fila.produto.atualizacao → disparada quando um produto é atualizado.
+- fila.produto.remocao → disparada quando um produto é removido.
