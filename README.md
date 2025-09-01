@@ -25,6 +25,8 @@ A documentação da API é disponibilizada automaticamente pelo **Swagger**.
 - Integração com **RabbitMQ** para disparar eventos de atualização/exclusão  
 - Persistência em banco relacional **MySQL**  
 - Documentação interativa da API com **Swagger UI**
+- **Logs automáticos de operações**
+- **Alertas configurados para melhor gestão do estoque**
 
 ---
 
