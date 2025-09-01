@@ -17,11 +17,11 @@ public interface ProductRepository extends JpaRepository<Product,String> {
         c.name,
         c.description,
         c.createdAt,
-        COUNT(p)
+        COUNT(p.id)
     )
-    FROM Product p
-    JOIN p.category c
+    FROM Category c
+    LEFT JOIN Product p ON p.category = c
     GROUP BY c.id, c.color, c.description, c.createdAt
 """)
-    List<DataCountCategory> countProductByCategory();
+    List<DataCountCategory> fetchProductByCategory();
 }

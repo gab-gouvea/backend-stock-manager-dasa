@@ -43,9 +43,8 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<DataCountCategory>> count() {
-        List<DataCountCategory> produtosCate = productRepository.countProductByCategory();
-        return ResponseEntity.ok(produtosCate);
+    public List<DataCountCategory> count() {
+        return productRepository.fetchProductByCategory();
     }
 
     @PutMapping
