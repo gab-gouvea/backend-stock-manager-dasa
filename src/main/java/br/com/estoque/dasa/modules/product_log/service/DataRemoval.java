@@ -15,6 +15,6 @@ public record DataRemoval(
         Long quantity,
 
         @NotBlank
-        String cpf
+        String name
 ) {
 }

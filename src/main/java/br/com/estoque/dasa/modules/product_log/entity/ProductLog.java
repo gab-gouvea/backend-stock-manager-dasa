@@ -30,7 +30,7 @@ public class ProductLog {
     private Long quantity;
 
     @Column(nullable = true)
-    private String cpf;
+    private String name;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -44,9 +44,9 @@ public class ProductLog {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    public ProductLog(Long quantity, String cpf, Product product, EnumAction action) {
+    public ProductLog(Long quantity, String name, Product product, EnumAction action) {
         this.quantity = quantity;
-        this.cpf = cpf;
+        this.name = name;
         this.product = product;
         this.action = action;
     }

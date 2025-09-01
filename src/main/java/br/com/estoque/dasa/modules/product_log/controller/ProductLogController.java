@@ -23,13 +23,8 @@ public class ProductLogController{
     public List<DataListLogs> list() {
         return repository.findByAction(EnumAction.RETIRADA_ESTOQUE).stream().map(DataListLogs::new).toList();
     }
+}
 
-    @GetMapping("/all")
-    public List<DataListLogs> listAll() {
-        return repository.findAll().stream().map(DataListLogs::new).toList();
-    }
-
-};
 
 
 

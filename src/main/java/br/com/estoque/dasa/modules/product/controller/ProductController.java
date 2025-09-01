@@ -106,7 +106,7 @@ public class ProductController {
             alertRepository.save(alert);
         }
 
-        var log = new ProductLog(data.quantity(), data.cpf(), product, EnumAction.RETIRADA_ESTOQUE);
+        var log = new ProductLog(data.quantity(), data.name(), product, EnumAction.RETIRADA_ESTOQUE);
         logRepository.save(log);
 
         return ResponseEntity.ok("Estoque atualizado e log gerado!");
