@@ -1,6 +1,7 @@
 package br.com.estoque.dasa.modules.product.rabbitmq;
 
 import br.com.estoque.dasa.modules.product_log.service.DataRemoval;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class ProductConsumer {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @RabbitListener(queues = "fila.produto.atualizacao")
+    @RabbitListener(queues = "queue.product.remove")
     public void receiveMessage(String message) {
         try {
             DataRemoval data = objectMapper.readValue(message, DataRemoval.class);
@@ -26,11 +27,9 @@ public class ProductConsumer {
             restTemplate.postForObject("http://localhost:8080/products/removal", data, String.class);
 
             System.out.println("mensagem processada" + data);
-        } catch (Exception e) {
+        } catch (JsonProcessingException e) {
             //da para tratar com logger aqui
             e.printStackTrace();
         }
-
-
     }
 }
