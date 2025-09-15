@@ -31,11 +31,10 @@ public class ProductService {
     private ProductLogRepository logRepository;
 
     @Transactional
-    public void stockOut(List<DataRemoval> itens) {
+    public void stockOut(List<DataRemoval> itens, String withdrawBy) {
 
         for (DataRemoval i : itens) {
             if (!repository.existsByName(i.productName())) {
-                System.out.println("NOME NAO EXISTE");
                 continue;
             }
 
@@ -56,7 +55,7 @@ public class ProductService {
                 alertRepository.save(alert);
             }
 
-            var log = new ProductLog(i.quantity(), i.withdrawnBy(), product, EnumAction.RETIRADA_ESTOQUE);
+            var log = new ProductLog(i.quantity(), withdrawBy, product, EnumAction.RETIRADA_ESTOQUE);
             logRepository.save(log);
         }
     }

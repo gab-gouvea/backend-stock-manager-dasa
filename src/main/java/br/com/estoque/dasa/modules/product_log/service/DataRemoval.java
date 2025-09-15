@@ -12,9 +12,6 @@ public record DataRemoval(
 
         @Min(1)
         @NotNull
-        Long quantity,
-
-        @NotBlank
-        String withdrawnBy
+        Long quantity
 ) {
 }

@@ -89,7 +89,7 @@ public class ProductController {
     @PostMapping("/removal")
     @Transactional
     public ResponseEntity<?> stockOut(@RequestBody @Valid WrapperStockOut request) {
-        productService.stockOut(request.itens());
+        productService.stockOut(request.itens(), request.withdrawBy());
         return ResponseEntity.ok("Estoque atualizado e log gerado!");
     }
 //    @Transactional
