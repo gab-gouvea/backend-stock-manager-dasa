@@ -8,13 +8,13 @@ import jakarta.validation.constraints.NotNull;
 public record DataRemoval(
 
         @NotBlank
-        String id,
+        String productName,
 
         @Min(1)
         @NotNull
         Long quantity,
 
         @NotBlank
-        String name
+        String withdrawnBy
 ) {
 }

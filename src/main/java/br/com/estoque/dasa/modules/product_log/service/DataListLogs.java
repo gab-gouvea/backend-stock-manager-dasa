@@ -5,9 +5,9 @@ import br.com.estoque.dasa.modules.product_log.entity.ProductLog;
 
 import java.time.LocalDateTime;
 
-public record DataListLogs(String id, String name, Long quantity, LocalDateTime createdAt, Product product) {
+public record DataListLogs(String id, String withdrawBy, Long quantity, LocalDateTime createdAt, Product product) {
 
     public DataListLogs(ProductLog productLog) {
-        this(productLog.getId(), productLog.getName(), productLog.getQuantity(), productLog.getCreatedAt(), productLog.getProduct());
+        this(productLog.getId(), productLog.getWithdrawBy(), productLog.getQuantity(), productLog.getCreatedAt(), productLog.getProduct());
     }
 }

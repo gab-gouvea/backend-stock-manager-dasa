@@ -13,6 +13,7 @@ import br.com.estoque.dasa.modules.product_log.repository.ProductLogRepository;
 import br.com.estoque.dasa.modules.product_log.service.DataJoin;
 import br.com.estoque.dasa.modules.product_log.service.DataRemoval;
 import br.com.estoque.dasa.modules.product_log.service.EnumAction;
+import br.com.estoque.dasa.modules.product_log.service.WrapperStockOut;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,27 +88,32 @@ public class ProductController {
     @PostMapping("/removal")
     @Transactional
     public ResponseEntity<?> stockOut(
-            @RequestBody @Valid DataRemoval data
-    ) {
-        if (!repository.existsById(data.id())) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto não encontrado.");
+            @RequestBody @Valid WrapperStockOut request
+            ) {
+
+        List<DataRemoval> itens = request.itens();
+
+        for  (DataRemoval i : itens) {
+            if (!repository.existsByName(i.productName())) {
+                continue;
+            }
+
+            Product product = repository.getReferenceByName(i.productName());
+
+            try {
+                product.stockOut(i);
+            } catch (IllegalArgumentException error) {
+                continue;
+            }
+
+            if (product.getQuantity() <= product.getMinQuantity()) {
+                var alert = new Alert(product, EnumTipo.QUANTIDADE_MINIMA, true, "Quantidade desse produto chegou no limite, compre mais!");
+                alertRepository.save(alert);
+            }
+
+            var log = new ProductLog(i.quantity(), i.withdrawnBy(), product, EnumAction.RETIRADA_ESTOQUE);
+            logRepository.save(log);
         }
-
-        Product product = repository.getReferenceById(data.id());
-
-        try {
-            product.stockOut(data);
-        } catch (IllegalArgumentException error) {
-            return ResponseEntity.badRequest().body(error.getMessage());
-        }
-
-        if (product.getQuantity() <= product.getMinQuantity()) {
-            var alert = new Alert(product, EnumTipo.QUANTIDADE_MINIMA, true, "Quantidade desse produto chegou no limite, compre mais!");
-            alertRepository.save(alert);
-        }
-
-        var log = new ProductLog(data.quantity(), data.name(), product, EnumAction.RETIRADA_ESTOQUE);
-        logRepository.save(log);
 
         return ResponseEntity.ok("Estoque atualizado e log gerado!");
     }

@@ -73,7 +73,7 @@ public class Product {
 
     public void stockOut(@Valid DataRemoval data) {
         if (data.quantity() > this.quantity) {
-            throw new IllegalArgumentException("Estoque insuficiente");
+            throw new IllegalArgumentException("Estoque insuficiente: ");
         }
         this.quantity -= data.quantity();
     }

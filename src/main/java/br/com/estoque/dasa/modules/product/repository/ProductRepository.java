@@ -2,6 +2,7 @@ package br.com.estoque.dasa.modules.product.repository;
 
 import br.com.estoque.dasa.modules.product.entity.Product;
 import br.com.estoque.dasa.modules.product.service.DataCountCategory;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -24,4 +25,6 @@ public interface ProductRepository extends JpaRepository<Product,String> {
     GROUP BY c.id, c.color, c.description, c.createdAt
 """)
     List<DataCountCategory> fetchProductByCategory();
+
+    Product getReferenceByName(String name);
 }

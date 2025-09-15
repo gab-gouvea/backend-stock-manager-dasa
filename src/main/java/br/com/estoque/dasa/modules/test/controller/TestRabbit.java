@@ -22,7 +22,7 @@ public class TestRabbit {
     @PostMapping("/send")
     @Transactional
     public void send(@RequestBody String message){
-        rabbitTemplate.convertAndSend("fila.produto.atualizacao", message, String.class);
+        rabbitTemplate.convertAndSend("stock", "remove", message);
         System.out.println("mensagem processada" + message);
 
     }
