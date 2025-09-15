@@ -35,15 +35,18 @@ public class ProductService {
 
         for (DataRemoval i : itens) {
             if (!repository.existsByName(i.productName())) {
+                System.out.println("NOME NAO EXISTE");
                 continue;
             }
 
             Product product = repository.getReferenceByName(i.productName());
 
             try {
+                if(product.getQuantity() < i.quantity()) {
+                    rabbitTemplate.convertAndSend("stock", "remove.error", "Erro ao retirar item: " + i.productName());
+                }
                 product.setQuantity(product.getQuantity() - i.quantity());
             } catch (IllegalArgumentException e) {
-                rabbitTemplate.convertAndSend("stock", "remove", "Meu pau");
                 continue;
             }
 
