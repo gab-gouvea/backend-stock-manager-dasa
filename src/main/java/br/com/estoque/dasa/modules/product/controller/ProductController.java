@@ -1,17 +1,15 @@
 package br.com.estoque.dasa.modules.product.controller;
 
 
-import br.com.estoque.dasa.modules.alert.entity.Alert;
 import br.com.estoque.dasa.modules.alert.repository.AlertRepository;
-import br.com.estoque.dasa.modules.alert.service.EnumTipo;
 import br.com.estoque.dasa.modules.category.repository.CategoryRepository;
+import br.com.estoque.dasa.modules.product.ProductService;
 import br.com.estoque.dasa.modules.product.repository.ProductRepository;
 import br.com.estoque.dasa.modules.product.service.*;
 import br.com.estoque.dasa.modules.product.entity.Product;
 import br.com.estoque.dasa.modules.product_log.entity.ProductLog;
 import br.com.estoque.dasa.modules.product_log.repository.ProductLogRepository;
 import br.com.estoque.dasa.modules.product_log.service.DataJoin;
-import br.com.estoque.dasa.modules.product_log.service.DataRemoval;
 import br.com.estoque.dasa.modules.product_log.service.EnumAction;
 import br.com.estoque.dasa.modules.product_log.service.WrapperStockOut;
 import jakarta.transaction.Transactional;
@@ -38,6 +36,9 @@ public class ProductController {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private ProductService productService;
 
     @PostMapping
     @Transactional
@@ -87,36 +88,41 @@ public class ProductController {
 
     @PostMapping("/removal")
     @Transactional
-    public ResponseEntity<?> stockOut(
-            @RequestBody @Valid WrapperStockOut request
-            ) {
-
-        List<DataRemoval> itens = request.itens();
-
-        for  (DataRemoval i : itens) {
-            if (!repository.existsByName(i.productName())) {
-                continue;
-            }
-
-            Product product = repository.getReferenceByName(i.productName());
-
-            try {
-                product.stockOut(i);
-            } catch (IllegalArgumentException error) {
-                continue;
-            }
-
-            if (product.getQuantity() <= product.getMinQuantity()) {
-                var alert = new Alert(product, EnumTipo.QUANTIDADE_MINIMA, true, "Quantidade desse produto chegou no limite, compre mais!");
-                alertRepository.save(alert);
-            }
-
-            var log = new ProductLog(i.quantity(), i.withdrawnBy(), product, EnumAction.RETIRADA_ESTOQUE);
-            logRepository.save(log);
-        }
-
+    public ResponseEntity<?> stockOut(@RequestBody @Valid WrapperStockOut request) {
+        productService.stockOut(request.itens());
         return ResponseEntity.ok("Estoque atualizado e log gerado!");
     }
+//    @Transactional
+//    public ResponseEntity<?> stockOut(
+//            @RequestBody @Valid WrapperStockOut request
+//            ) {
+//
+//        List<DataRemoval> itens = request.itens();
+//
+//        for  (DataRemoval i : itens) {
+//            if (!repository.existsByName(i.productName())) {
+//                continue;
+//            }
+//
+//            Product product = repository.getReferenceByName(i.productName());
+//
+//            try {
+//                productService.stockOut();
+//            } catch (IllegalArgumentException error) {
+//                continue;
+//            }
+//
+//            if (product.getQuantity() <= product.getMinQuantity()) {
+//                var alert = new Alert(product, EnumTipo.QUANTIDADE_MINIMA, true, "Quantidade desse produto chegou no limite, compre mais!");
+//                alertRepository.save(alert);
+//            }
+//
+//            var log = new ProductLog(i.quantity(), i.withdrawnBy(), product, EnumAction.RETIRADA_ESTOQUE);
+//            logRepository.save(log);
+//        }
+//
+//        return ResponseEntity.ok("Estoque atualizado e log gerado!");
+//    }
 
     @PostMapping("/join/{id}")
     @Transactional

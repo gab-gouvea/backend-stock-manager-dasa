@@ -26,4 +26,8 @@ public class TestRabbit {
         System.out.println("mensagem processada" + message);
 
     }
+
+    public void sendError() {
+
+    }
 }
