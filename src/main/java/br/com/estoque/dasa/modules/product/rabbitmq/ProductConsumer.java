@@ -23,6 +23,8 @@ public class ProductConsumer {
         try {
             WrapperStockOut data = objectMapper.readValue(message, WrapperStockOut.class);
 
+
+
             restTemplate.postForObject("http://localhost:8080/products/removal", data, String.class);
             System.out.println("mensagem processada" + data);
 
